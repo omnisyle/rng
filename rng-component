@@ -19,6 +19,6 @@ if (!component_names.length) {
 
 _(component_names).forEach(function(component) {
 	if(typeof component === "string") {
-		console.log(chalk.bold("Created component with name: ") + chalk.green(component));
+		console.log(chalk.bold("Created component with name: ") + chalk.green(_.capitalize(component)));
 	}
 });
