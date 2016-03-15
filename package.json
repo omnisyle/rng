@@ -1,0 +1,24 @@
+{
+  "name": "rng",
+  "version": "0.0.1",
+  "description": "react native generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "rng -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/omnisyle/rng.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "generator"
+  ],
+  "author": "Si Le",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omnisyle/rng/issues"
+  },
+  "homepage": "https://github.com/omnisyle/rng#readme"
+}
