@@ -2,7 +2,10 @@
   "name": "rng",
   "version": "0.0.1",
   "description": "react native generator",
-  "main": "index.js",
+  "main": "rng",
+  "bin": {
+    "rng": "./rng"
+  },
   "scripts": {
     "test": "rng -v"
   },
@@ -20,5 +23,10 @@
   "bugs": {
     "url": "https://github.com/omnisyle/rng/issues"
   },
-  "homepage": "https://github.com/omnisyle/rng#readme"
+  "homepage": "https://github.com/omnisyle/rng#readme",
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "commander": "^2.9.0",
+    "lodash": "^4.6.1"
+  }
 }
