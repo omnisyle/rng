@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var chalk = require('chalk');
+var shell = require('shelljs');
+const _pwd = shell.pwd();
+program
+	.action(function() {
+		console.log("Initiating app structure...");
+	})
+	.parse(process.argv);
+
+var dirs = ['app',
+	'app/assets/stylesheets',
+	'app/assets/images',
+	'app/lib/android',
+	'app/lib/ios',
+	'app/components',
+	'app/services',
+	'app/config'
+	];
+
+console.log(shell.mkdir('-p', dirs));
+
+for(i = 0, l = dirs.length; i < l, i++) {
+	shell.echo(chalk.green('mkdir ') + chalk.bold.green(dirs[i]));
+}

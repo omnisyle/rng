@@ -3,6 +3,7 @@
 var program = require('commander');
 var chalk = require('chalk');
 var _ = require('lodash');
+var shell = require('shelljs');
 
 program
 	.action(function() {
@@ -13,12 +14,13 @@ program
 var component_names = program.args;
 
 if (!component_names.length) {
-  console.error('Component name required');
+  console.error(chalk.bold.red('Component name required'));
   process.exit(1);
 }
 
 _(component_names).forEach(function(component) {
 	if(typeof component === "string") {
+		console.log(shell.pwd());
 		console.log(chalk.bold("Created component with name: ") + chalk.green(_.capitalize(component)));
 	}
 });
