@@ -4,24 +4,95 @@ var program = require('commander');
 var chalk = require('chalk');
 var shell = require('shelljs');
 const _pwd = shell.pwd();
+var DIRS = ['app',
+		'app/assets/stylesheets',
+		'app/assets/images',
+		'app/lib/android',
+		'app/lib/ios',
+		'app/components',
+		'app/services',
+		'app/config'
+	];
+
 program
 	.action(function() {
-		console.log("Initiating app structure...");
+		console.log(chalk.bold("Initiating app structure..."));
 	})
 	.parse(process.argv);
 
-var dirs = ['app',
-	'app/assets/stylesheets',
-	'app/assets/images',
-	'app/lib/android',
-	'app/lib/ios',
-	'app/components',
-	'app/services',
-	'app/config'
-	];
-
-console.log(shell.mkdir('-p', dirs));
-
-for(i = 0, l = dirs.length; i < l, i++) {
-	shell.echo(chalk.green('mkdir ') + chalk.bold.green(dirs[i]));
+function react_native_installed() {
+	var check = shell.exec("react-native -v", {silent: true});
+	if(check.code === 127) {
+		return false;
+	}
+	return true;
 }
+
+function inside_react_native_dir() {
+	var check = shell.exec("react-native -v", {silent: true});
+	if(check.code === 0 && check.output.match(/not inside/) !== null) {
+		return true;
+	}
+	return false;
+}
+
+function log_path_exists(path) {
+	shell.echo(chalk.bold.red('exists ') + chalk.bold(path));
+}
+
+function log_path_created(path) {
+	shell.echo(chalk.green('mkdir ') + chalk.bold.green(path));
+}
+
+function generate_dirs() {
+	for(i = 0, l = DIRS.length; i < l; i++) {
+		file_path = DIRS[i];
+
+		if(test('-e', file_path)) {
+			log_path_exists(file_path);
+		}	else {
+			shell.mkdir('-p', file_path);
+			log_path_created(file_path);
+		}
+	}
+}
+
+function generate_react_native(name) {
+	var com = exec('react-native init %s', name);
+	shell.cd(_pwd + name);
+}
+
+function main() {
+	if(!react_native_installed()) {
+		shell.echo('Please install react-native-cli before using rng');
+		process.exit(1);
+	}
+
+	if(program.args.length === 1) {
+		var app_name = program.args[0];
+
+		if(inside_react_native_dir()) {
+			shell.echo(chalk.yello("You're already inside a react-native app"));
+		} else {
+			//generate the whole react-native app and cd into it
+			generate_react_native(app_name);
+		}
+
+		generate_dirs();
+		process.exit(0);
+	} else if (program.args.length > 1) {
+		shell.error(chalk.red("Passing too many arguments !!!"));
+		process.exit(1);
+	} else {
+		if(!inside_react_native_dir()) {
+			//generate react-native app
+			console.log("You're not inside a react-native app and did not give a name for it");
+			console.log("Please enter a name for you react-native app: ");
+		}
+		generate_dirs();
+	}
+
+	process.exit(1)
+}
+
+main();

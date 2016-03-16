@@ -4,5 +4,6 @@ var program = require('commander');
 
 program
 	.version('0.0.1')
+	.command('init [name]', 'Generates app structure, if you\'d like to generate the whole react-native app, please pass in a name')
 	.command('component [name]', 'Generates React Component')
 	.parse(process.argv);
