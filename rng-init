@@ -3,6 +3,7 @@
 var program = require('commander');
 var chalk = require('chalk');
 var shell = require('shelljs');
+const readline = require('readline');
 const _pwd = shell.pwd();
 var DIRS = ['app',
 		'app/assets/stylesheets',
@@ -14,11 +15,7 @@ var DIRS = ['app',
 		'app/config'
 	];
 
-program
-	.action(function() {
-		console.log(chalk.bold("Initiating app structure..."));
-	})
-	.parse(process.argv);
+program.parse(process.argv);
 
 function react_native_installed() {
 	var check = shell.exec("react-native -v", {silent: true});
@@ -30,7 +27,7 @@ function react_native_installed() {
 
 function inside_react_native_dir() {
 	var check = shell.exec("react-native -v", {silent: true});
-	if(check.code === 0 && check.output.match(/not inside/) !== null) {
+	if(check.code === 0 && check.output.match(/not inside/) === null) {
 		return true;
 	}
 	return false;
@@ -48,7 +45,7 @@ function generate_dirs() {
 	for(i = 0, l = DIRS.length; i < l; i++) {
 		file_path = DIRS[i];
 
-		if(test('-e', file_path)) {
+		if(shell.test('-e', file_path)) {
 			log_path_exists(file_path);
 		}	else {
 			shell.mkdir('-p', file_path);
@@ -58,8 +55,13 @@ function generate_dirs() {
 }
 
 function generate_react_native(name) {
-	var com = exec('react-native init %s', name);
-	shell.cd(_pwd + name);
+	var com = shell.exec('react-native init ' + name);
+	shell.cd(_pwd + '/' + name);
+}
+
+function onErr(err) {
+  console.log(err);
+  return 1;
 }
 
 function main() {
@@ -70,10 +72,12 @@ function main() {
 
 	if(program.args.length === 1) {
 		var app_name = program.args[0];
+		console.log("App name " + app_name);
 
 		if(inside_react_native_dir()) {
-			shell.echo(chalk.yello("You're already inside a react-native app"));
+			shell.echo(chalk.yellow("You're already inside a react-native app"));
 		} else {
+			shell.echo(chalk.bold("Generating react native and rng structure..."));
 			//generate the whole react-native app and cd into it
 			generate_react_native(app_name);
 		}
@@ -87,12 +91,20 @@ function main() {
 		if(!inside_react_native_dir()) {
 			//generate react-native app
 			console.log("You're not inside a react-native app and did not give a name for it");
-			console.log("Please enter a name for you react-native app: ");
+			console.log("Please enter a name for you react-native app");
+      const rl = readline.createInterface({
+      	input: process.stdin,
+  			output: process.stdout
+      });
+      rl.question('App name: ', (answer) => {
+  			console.log(chalk.bold("Generating " + answer +" app"));
+  			generate_react_native(answer);
+  			generate_dirs();
+  			rl.close();
+  			process.exit(0);
+			});
 		}
-		generate_dirs();
 	}
-
-	process.exit(1)
 }
 
 main();
