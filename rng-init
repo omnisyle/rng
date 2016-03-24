@@ -3,17 +3,10 @@
 var program = require('commander');
 var chalk = require('chalk');
 var shell = require('shelljs');
+var _ = require('lodash');
 const readline = require('readline');
 const _pwd = shell.pwd();
-var DIRS = ['app',
-		'app/assets/stylesheets',
-		'app/assets/images',
-		'app/lib/android',
-		'app/lib/ios',
-		'app/components',
-		'app/services',
-		'app/config'
-	];
+const dirs = require('./constants').DIRS;
 
 program.parse(process.argv);
 
@@ -42,8 +35,8 @@ function log_path_created(path) {
 }
 
 function generate_dirs() {
-	for(i = 0, l = DIRS.length; i < l; i++) {
-		file_path = DIRS[i];
+	_.forEach(dirs, function(val, key) {
+		file_path = val;
 
 		if(shell.test('-e', file_path)) {
 			log_path_exists(file_path);
@@ -51,7 +44,7 @@ function generate_dirs() {
 			shell.mkdir('-p', file_path);
 			log_path_created(file_path);
 		}
-	}
+	});
 }
 
 function generate_react_native(name) {

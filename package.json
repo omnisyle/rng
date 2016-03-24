@@ -19,7 +19,7 @@
     "generator"
   ],
   "author": "Si Le",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/omnisyle/rng/issues"
   },
@@ -27,6 +27,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
+    "handlebars": "^4.0.5",
     "lodash": "^4.6.1",
     "prompt": "^1.0.0",
     "shelljs": "^0.6.0"

@@ -1,15 +1,12 @@
 #!/usr/bin/env node
-
+const dirs = require('./constants').DIRS;
 var program = require('commander');
 var chalk = require('chalk');
 var _ = require('lodash');
 var shell = require('shelljs');
+var FileGenerator = require('./modules/FileGenerator');
 
-program
-	.action(function() {
-		console.log("Creating component(s)...");
-	})
-	.parse(process.argv);
+program.parse(process.argv);
 
 var component_names = program.args;
 
@@ -19,8 +16,6 @@ if (!component_names.length) {
 }
 
 _(component_names).forEach(function(component) {
-	if(typeof component === "string") {
-		console.log(shell.pwd());
-		console.log(chalk.bold("Created component with name: ") + chalk.green(_.capitalize(component)));
-	}
+	FileGenerator.generate_component_file(component);
+	FileGenerator.generate_style_file(component);
 });
