@@ -1,6 +1,6 @@
 {
-  "name": "rng",
-  "version": "0.0.1",
+  "name": "@sile/rng",
+  "version": "0.0.3",
   "description": "react native generator",
   "main": "rng",
   "bin": {
