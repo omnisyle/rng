@@ -17,7 +17,7 @@ class {{component_name}} extends Component {
 
 	render() {
 		return(
-
+			<View />
 		);
 	}
 }

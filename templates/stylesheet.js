@@ -4,7 +4,7 @@ import React, {
 }
 from 'react-native';
 
-class {{component_name}}StyleSheet {
+class {{component_name}}Stylesheet {
   constructor() {
     //TODO: adds styles
     this.styles = {};
@@ -16,4 +16,4 @@ class {{component_name}}StyleSheet {
   }
 }
 
-module.exports = new {{component_name}}StyleSheet();
+module.exports = new {{component_name}}Stylesheet();
